@@ -192,4 +192,29 @@ class ProfileViewModel : ViewModel() {
             }
         }
     }
+
+    fun redeemLoyaltyCard(onResult: (Boolean) -> Unit) {
+        val currentProfile = _profile.value
+        if (currentProfile == null || currentProfile.loyaltyPts < 8) {
+            onResult(false)
+            return
+        }
+
+        viewModelScope.launch {
+            _isLoading.value = true
+
+
+            val updatedProfile = currentProfile.copy(
+                loyaltyPts = currentProfile.loyaltyPts - 8,
+            )
+
+            profileManager.saveProfile(updatedProfile) { success ->
+                if (success) {
+                    _profile.value = updatedProfile
+                }
+                _isLoading.value = false
+                onResult(success)
+            }
+        }
+    }
 }

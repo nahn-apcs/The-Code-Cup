@@ -202,7 +202,7 @@ fun LoyaltyCard(
     modifier: Modifier = Modifier
 ) {
     val cardTitle = if (language == "vi") "Thẻ tích điểm" else "Loyalty card"
-    val stamp = stampCount % maxStamp
+    val stamp = stampCount
     Column(
         modifier = modifier
             .fillMaxWidth()
