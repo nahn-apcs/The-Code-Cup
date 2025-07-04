@@ -58,7 +58,6 @@ fun AppNavGraph(
                 }
             ),
             enterTransition = {
-                // Trượt vào từ trái nếu đến từ orderSuccess, ngược lại trượt vào từ phải
                 if (initialState.destination.route == "orderSuccess") {
                     slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(DURATION_MILLIS))
                 } else {
@@ -72,7 +71,6 @@ fun AppNavGraph(
                 slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(DURATION_MILLIS))
             },
             popExitTransition = {
-                // Trượt ra phải nếu quay về orderSuccess, ngược lại trượt ra phải
                 if (targetState.destination.route == "orderSuccess") {
                     slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(DURATION_MILLIS))
                 } else {

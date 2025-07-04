@@ -65,7 +65,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyOrderScreen( // 1. Đổi tên hàm và nhận paddingValues từ MainScreen
+fun MyOrderScreen(
     paddingValues: PaddingValues,
     navController: NavController,
     profileViewModel: ProfileViewModel,
@@ -78,13 +78,11 @@ fun MyOrderScreen( // 1. Đổi tên hàm và nhận paddingValues từ MainScre
     val tabs = if (currentLang == "vi") listOf("Đang thực hiện", "Lịch sử") else listOf("On going", "History")
     val title = if (currentLang == "vi") "Đơn hàng của tôi" else "My Order"
 
-    // 2. Xóa bỏ Scaffold, chỉ giữ lại nội dung bên trong một Column
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = paddingValues.calculateBottomPadding()) // 4. Áp dụng padding từ MainScreen ở đây
+            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
-        // 3. Giữ lại TopAppBar vì nó là một phần của giao diện màn hình này
         CenterAlignedTopAppBar(
             title = {
                 Text(
@@ -94,7 +92,6 @@ fun MyOrderScreen( // 1. Đổi tên hàm và nhận paddingValues từ MainScre
                     fontSize = 22.sp
                 )
             },
-            // Xóa bỏ hoàn toàn khối navigationIcon ở đây
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = Color.Transparent
             )
@@ -107,7 +104,7 @@ fun MyOrderScreen( // 1. Đổi tên hàm và nhận paddingValues từ MainScre
                 TabRowDefaults.Indicator(
                     Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
                     height = 3.dp,
-                    color = Color(0xFF324A59) // Màu đậm
+                    color = Color(0xFF324A59)
                 )
             }
         ) {
@@ -140,7 +137,7 @@ fun MyOrderScreen( // 1. Đổi tên hàm và nhận paddingValues từ MainScre
                         orders = ongoingOrders,
                         language = currentLang,
                         onOrderComplete = { order ->
-                            profileViewModel.moveOrderToHistory(order) { /* Handle result */ }
+                            profileViewModel.moveOrderToHistory(order) {}
                         }
                     )
                 }
@@ -166,14 +163,12 @@ fun EmptyStateText(
     modifier: Modifier = Modifier,
     message: String
 ) {
-    // Box dùng để căn giữa nội dung
     Box(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Text để hiển thị thông báo
         Text(
             text = message,
             fontFamily = Poppins,
@@ -197,19 +192,15 @@ private fun OngoingOrdersList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(orders, key = { it.id }) { order ->
-            // BƯỚC 1: Đảm bảo chúng ta luôn có lambda onOrderComplete mới nhất
             val currentOnOrderComplete by rememberUpdatedState(onOrderComplete)
 
-            // BƯỚC 2: Chỉ cho phép confirm, không gọi hàm ở đây nữa
             val dismissState = rememberSwipeToDismissBoxState(
                 confirmValueChange = {
-                    // Chỉ trả về true nếu vuốt đúng hướng, không gọi hàm ở đây
                     it == SwipeToDismissBoxValue.EndToStart
                 },
                 positionalThreshold = { it * 0.25f }
             )
 
-            // BƯỚC 3: DÙNG LaunchedEffect ĐỂ GỌI HÀM AN TOÀN
             LaunchedEffect(dismissState.currentValue) {
                 if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
                     currentOnOrderComplete(order)
@@ -221,7 +212,6 @@ private fun OngoingOrdersList(
                 enableDismissFromStartToEnd = false,
                 enableDismissFromEndToStart = true,
                 backgroundContent = {
-                    // ... (giữ nguyên phần backgroundContent)
                     val color by animateColorAsState(
                         targetValue = when (dismissState.targetValue) {
                             SwipeToDismissBoxValue.EndToStart -> Color(0xFFE8F5E9)
@@ -276,13 +266,12 @@ private fun HistoryOrdersList(orders: List<Order>, language: String) {
 
 @Composable
 private fun OrderItemCard(order: Order, language: String) {
-    // Định dạng lại ngày tháng để dễ đọc hơn
     val displayDate = try {
         val parser = java.text.SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault())
         val formatter = java.text.SimpleDateFormat("dd MMM | hh:mm a", Locale(if (language == "vi") "vi" else "en"))
         formatter.format(parser.parse(order.date)!!)
     } catch (e: Exception) {
-        order.date // fallback
+        order.date
     }
 
     Surface(

@@ -91,14 +91,13 @@ fun DetailsScreen(
     detailsViewModel: DetailsViewModel = viewModel()
 ) {
 
-    // === THÊM MÃ NÀY ===
-    // State để điều khiển việc hiển thị BottomSheet
+
     val sheetState = rememberModalBottomSheetState()
     var showCartPreview by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    // Lấy danh sách các sản phẩm trong giỏ hàng
+
     val cartItemsList by cartViewModel.cartItems.collectAsState()
-    // === KẾT THÚC THÊM MÃ ===
+
 
     val currentLang by languageViewModel.language.collectAsState()
     val coffeeItem by detailsViewModel.coffeeItem.collectAsState()
@@ -140,11 +139,11 @@ fun DetailsScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() },
-                        modifier = Modifier.size(40.dp).padding(start = 10.dp) // Thêm padding để căn chỉnh
+                        modifier = Modifier.size(40.dp).padding(start = 10.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_back), // Tải ảnh từ drawable
-                            contentDescription = "Back", // Mô tả cho mục đích hỗ trợ tiếp cận
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "Back",
                             modifier = Modifier
                                 .size(50.dp)
                         )
@@ -157,14 +156,12 @@ fun DetailsScreen(
                         Icon(
                             Icons.Outlined.ShoppingCart,
                             contentDescription = "Cart",
-                            // Áp dụng animation scale vào icon
                             modifier = Modifier
                                 .size(30.dp)
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-                //modifier = Modifier.padding(top = 50.dp)
             )
         },
         bottomBar = {
@@ -172,7 +169,6 @@ fun DetailsScreen(
                 detailsViewModel = detailsViewModel,
                 languageViewModel = languageViewModel,
                 onAddToCart = {
-                    // Logic khi nhấn nút "Add to Cart"
                     val coffee = detailsViewModel.coffeeItem.value
                     val quantity = detailsViewModel.quantity.value
                     val sizeIndex = detailsViewModel.selectedSizeIndex.value
@@ -201,13 +197,11 @@ fun DetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = PaddingValues(bottom = 24.dp)
             ) {
-                // Image
                 item {
                     Surface(
                         shape = RoundedCornerShape(24.dp),
                         color = Color(0xFFEDEFF5),
-                        // Thêm viền ở đây
-                        border = BorderStroke(1.dp, Color(0xFFF2F2F2)), // <-- THÊM VIỀN VÀ MÀU XÁM MỚI
+                        border = BorderStroke(1.dp, Color(0xFFF2F2F2)),
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
                             .fillMaxWidth()
@@ -222,7 +216,6 @@ fun DetailsScreen(
                     }
                 }
 
-                // Name and Quantity
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 24.dp),
@@ -241,7 +234,6 @@ fun DetailsScreen(
 
                 item { Divider(modifier = Modifier.padding(horizontal = 24.dp)) }
 
-                // Options
                 item { OptionShot(detailsViewModel, currentLang) }
                 item { Divider(modifier = Modifier.padding(horizontal = 24.dp)) }
                 item { OptionSelect(detailsViewModel, currentLang) }
@@ -256,7 +248,6 @@ fun DetailsScreen(
     }
 }
 
-// --- Các Composable cho từng lựa chọn ---
 
 @Composable
 fun OptionRow(label: String, content: @Composable RowScope.() -> Unit) {
@@ -285,14 +276,13 @@ fun OptionShot(viewModel: DetailsViewModel, language: String) {
     val selectedIndex by viewModel.selectedShotIndex.collectAsState()
     val shotOptions = if (language == "vi") listOf("1 shot", "2 shots") else listOf("Single", "Double")
 
-    // 1. Dùng Row làm layout chính cho cả hàng
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp), // Padding cho cả hàng
-        verticalAlignment = Alignment.CenterVertically // Căn giữa các phần tử theo chiều dọc
+            .padding(horizontal = 24.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        // 2. "Shot" label nằm bên trái
         Text(
             text = "Shot",
             fontFamily = DmSans,
@@ -301,10 +291,8 @@ fun OptionShot(viewModel: DetailsViewModel, language: String) {
             color = MaterialTheme.colorScheme.onSurface
         )
 
-        // 3. Spacer chiếm hết không gian thừa để đẩy các nút sang phải
         Spacer(modifier = Modifier.weight(1f))
 
-        // 4. Một Row khác để nhóm 2 nút bấm lại với nhau
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             shotOptions.forEachIndexed { index, text ->
                 SelectableTextButton(
@@ -338,7 +326,6 @@ fun OptionSelect(viewModel: DetailsViewModel, language: String) {
         Spacer(modifier = Modifier.weight(1f))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            // Cung cấp kích thước cố định cho các nút này
             SelectableIconOnlyButton(
                 onClick = { viewModel.setIsHot(true) },
                 iconRes = R.drawable.ic_hot_filled,
@@ -361,15 +348,13 @@ fun OptionSelect(viewModel: DetailsViewModel, language: String) {
 fun OptionSize(viewModel: DetailsViewModel, language: String) {
     val selectedIndex by viewModel.selectedSizeIndex.collectAsState()
 
-    // Định nghĩa các icon và kích thước tăng dần tương ứng
-    // Gồm: (Icon Resource, Kích thước nút, Kích thước icon)
     val sizeOptions = listOf(
         Triple(R.drawable.ic_size_filled, 50.dp, 20.dp),
         Triple(R.drawable.ic_size_filled, 50.dp, 28.dp),
         Triple(R.drawable.ic_size_filled, 50.dp, 34.dp)
     )
 
-    // Áp dụng layout ngang
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -388,14 +373,13 @@ fun OptionSize(viewModel: DetailsViewModel, language: String) {
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically // Căn các nút có size khác nhau
+            verticalAlignment = Alignment.CenterVertically
         ) {
             sizeOptions.forEachIndexed { index, (iconRes, buttonSize, iconSize) ->
                 SelectableIconOnlyButton(
                     onClick = { viewModel.setSize(index) },
                     iconRes = iconRes,
                     isSelected = selectedIndex == index,
-                    // Truyền kích thước tăng dần vào nút
                     buttonSize = buttonSize,
                     iconSize = iconSize
                 )
@@ -410,20 +394,18 @@ fun OptionIce(viewModel: DetailsViewModel, language: String) {
     val selectedLevel by viewModel.selectedIceLevel.collectAsState()
     val isEnabled = !isHot
 
-    // Định nghĩa các icon và kích thước tăng dần
-    // Gồm: (Icon Resource, Kích thước nút, Kích thước icon)
     val iceOptions = listOf(
         Triple(R.drawable.ic_ice1_filled, 50.dp, 14.dp),
         Triple(R.drawable.ic_ice2_filled, 50.dp, 28.dp),
         Triple(R.drawable.ic_ice3_filled, 50.dp, 28.dp)
     )
 
-    // Áp dụng layout ngang, và làm mờ nếu không được phép chọn
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 16.dp)
-            .alpha(if (isEnabled) 1f else 0.4f), // Làm mờ nếu là đồ uống nóng
+            .alpha(if (isEnabled) 1f else 0.4f),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -440,12 +422,11 @@ fun OptionIce(viewModel: DetailsViewModel, language: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             iceOptions.forEachIndexed { index, (iconRes, buttonSize, iconSize) ->
-                val level = index + 1 // Mức đá là 1, 2, 3
+                val level = index + 1
                 SelectableIconOnlyButton(
                     onClick = {
                         if (isEnabled) {
-                            // Nếu nhấn vào icon đang được chọn -> bỏ chọn (level = 0)
-                            // Ngược lại -> chọn level mới
+
                             val newLevel = if (selectedLevel == level) 0 else level
                             viewModel.setIceLevel(newLevel)
                         }
@@ -460,7 +441,6 @@ fun OptionIce(viewModel: DetailsViewModel, language: String) {
     }
 }
 
-// --- Các Composable con dùng để xây dựng UI ---
 
 @Composable
 fun SelectableTextButton(onClick: () -> Unit, text: String, isSelected: Boolean) {
@@ -490,7 +470,6 @@ fun SelectableIconOnlyButton(
     iconRes: Int,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    // Thêm 2 tham số để tùy chỉnh kích thước
     buttonSize: Dp = 50.dp,
     iconSize: Dp = 24.dp
 ) {
@@ -498,7 +477,6 @@ fun SelectableIconOnlyButton(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         color = if (isSelected) Color(0xFF324A59) else Color.LightGray.copy(alpha = 0.3f),
-        // Sử dụng kích thước từ tham số
         modifier = modifier.size(buttonSize),
     ) {
         Box(contentAlignment = Alignment.Center) {
@@ -506,7 +484,6 @@ fun SelectableIconOnlyButton(
                 painter = painterResource(id = iconRes),
                 contentDescription = null,
                 tint = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                // Sử dụng kích thước từ tham số
                 modifier = Modifier.size(iconSize)
             )
         }
@@ -523,9 +500,7 @@ fun QuantitySelector(viewModel: DetailsViewModel) {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            // Giảm khoảng cách giữa các phần tử
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            // Giảm padding bên trong
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
         ) {
             // Thu nhỏ nút bấm
@@ -579,16 +554,13 @@ fun BottomBar(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shadowElevation = 8.dp,
-        //color = Color.White // Đảm bảo nền là màu trắng
     ) {
-        // Dùng Column để xếp 2 hàng chồng lên nhau
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp) // Khoảng cách giữa 2 hàng
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Hàng 1: Chứa Total Amount và Giá tiền
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -610,12 +582,11 @@ fun BottomBar(
                 )
             }
 
-            // Hàng 2: Chứa nút Add to cart
             Button(
                 onClick = onAddToCart,
                 shape = CircleShape,
                 modifier = Modifier
-                    .fillMaxWidth() // Nút chiếm hết chiều ngang
+                    .fillMaxWidth()
                     .padding(top = 10.dp, bottom = 8.dp)
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -683,10 +654,8 @@ fun CartPreviewSheet(
 
 @Composable
 fun CartPreviewItem(item: CartItem, language: String) {
-    // Hàm helper để tạo chuỗi mô tả các lựa chọn
     fun generateOptionsString(cartItem: CartItem): String {
         val options = mutableListOf<String>()
-        // Dịch "single/double"
         options.add(
             if (language == "vi") {
                 if (cartItem.selectedShotIndex == 0) "1 shot" else "2 shots"
@@ -694,10 +663,10 @@ fun CartPreviewItem(item: CartItem, language: String) {
                 if (cartItem.selectedShotIndex == 0) "single" else "double"
             }
         )
-        // Dịch "hot/iced"
+
         options.add(if (language == "vi") (if (cartItem.isHotSelected) "nóng" else "lạnh") else (if (cartItem.isHotSelected) "hot" else "iced"))
 
-        // Dịch "small/medium/large"
+
         options.add(
             if (language == "vi") {
                 when (cartItem.selectedSizeIndex) {
@@ -713,7 +682,7 @@ fun CartPreviewItem(item: CartItem, language: String) {
                 }
             }
         )
-        // Dịch mức đá cho đồ uống lạnh
+
         if (!cartItem.isHotSelected) {
             val iceLevelString = if (language == "vi") {
                 when (cartItem.selectedIceLevel) {

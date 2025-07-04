@@ -73,12 +73,9 @@ fun HomePageScreen(
 
     Column(
         modifier = Modifier
-            .padding(bottom = paddingValues.calculateBottomPadding()) // 3. Áp dụng trực tiếp paddingValues từ MainScreen cho Column
+            .padding(bottom = paddingValues.calculateBottomPadding())
             .fillMaxSize()
         ) {
-        // (Các phần giao diện cốt lõi như Header và LazyColumn được giữ nguyên)
-
-        // Header with gradient background
         Box(
             modifier = Modifier
                 .fillMaxWidth()

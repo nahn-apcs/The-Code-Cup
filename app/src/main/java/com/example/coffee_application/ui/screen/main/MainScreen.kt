@@ -1,8 +1,4 @@
-// file: com/example/coffee_application/ui/screen/main/MainScreen.kt
-
 package com.example.coffee_application.ui.screen.main
-
-// Thêm các import cần thiết cho animation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -53,26 +49,19 @@ fun MainScreen(
             )
         }
     ) { innerPadding ->
-        // Sử dụng AnimatedContent để tạo hiệu ứng chuyển cảnh
         AnimatedContent(
             targetState = selectedItem,
             label = "MainScreenAnimation",
             transitionSpec = {
-                // Xác định hướng trượt dựa trên thứ tự của item trong enum
-                // targetState.ordinal là vị trí của item mới
-                // initialState.ordinal là vị trí của item cũ
                 if (targetState.ordinal > initialState.ordinal) {
-                    // Trượt từ phải sang trái
                     slideInHorizontally { width -> width } + fadeIn(animationSpec = tween(300)) togetherWith
                             slideOutHorizontally { width -> -width } + fadeOut(animationSpec = tween(300))
                 } else {
-                    // Trượt từ trái sang phải
                     slideInHorizontally { width -> -width } + fadeIn(animationSpec = tween(300)) togetherWith
                             slideOutHorizontally { width -> width } + fadeOut(animationSpec = tween(300))
                 }
             }
         ) { targetScreen ->
-            // `targetScreen` chính là `selectedItem` sau khi chuyển đổi
             when (targetScreen) {
                 BottomBarItem.HOME -> HomePageScreen(
                     paddingValues = innerPadding,

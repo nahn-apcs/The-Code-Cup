@@ -47,7 +47,6 @@ import com.example.coffee_application.data.CoffeeItem
 import com.example.coffee_application.data.coffeeOptions
 import com.example.coffee_application.viewmodel.ProfileViewModel
 
-// Giả định điểm cần để đổi một món quà bất kỳ
 private const val REDEMPTION_COST = 120
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +62,6 @@ fun RedeemScreen(
 
     val currentPoints = profile?.points ?: 0
 
-    // Dịch thuật
     val screenTitle = if (currentLang == "vi") "Đổi quà" else "Redeem"
     val validUntilText = if (currentLang == "vi") "Có giá trị đến" else "Valid until"
     val redeemSuccessText = if (currentLang == "vi") "Đổi quà thành công!" else "Redeem successful!"
@@ -101,8 +99,6 @@ fun RedeemScreen(
                         profileViewModel.redeemDrink(coffeeItem, REDEMPTION_COST) { success ->
                             if (success) {
                                 Toast.makeText(context, redeemSuccessText, Toast.LENGTH_SHORT).show()
-                                // Tự động quay về màn hình trước sau khi đổi thành công
-                                // navController.popBackStack()
                             } else {
                                 Toast.makeText(context, redeemFailedText, Toast.LENGTH_SHORT).show()
                             }
@@ -146,7 +142,7 @@ fun RedeemItem(
                     fontSize = 16.sp
                 )
                 Text(
-                    text = "$validUntilText 04.07.21", // Bạn có thể thay đổi ngày này
+                    text = "$validUntilText 04.07.21",
                     fontFamily = Poppins,
                     fontSize = 12.sp,
                     color = Color.Gray
@@ -156,7 +152,7 @@ fun RedeemItem(
 
         Button(
             onClick = onRedeemClick,
-            enabled = canRedeem, // Nút chỉ bật khi đủ điểm
+            enabled = canRedeem,
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF324A59),

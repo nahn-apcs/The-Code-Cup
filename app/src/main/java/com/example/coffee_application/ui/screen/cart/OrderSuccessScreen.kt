@@ -34,10 +34,8 @@ fun OrderSuccessScreen(
     navController: NavController,
     languageViewModel: LanguageViewModel
 ) {
-    // Lấy trạng thái ngôn ngữ hiện tại từ ViewModel
     val currentLang by languageViewModel.language.collectAsState()
 
-    // Định nghĩa các chuỗi văn bản dựa trên ngôn ngữ
     val title = if (currentLang == "vi") "Đặt hàng thành công" else "Order Success"
     val subtitle = if (currentLang == "vi") "Đơn hàng của bạn đã được đặt" else "Your order has been placed"
     val trackOrderButtonText = if (currentLang == "vi") "Theo dõi đơn hàng" else "Track My Order"
@@ -50,7 +48,6 @@ fun OrderSuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Icon thành công
         Icon(
             painter = painterResource(id = R.drawable.take_away),
             contentDescription = "Success Icon",
@@ -58,7 +55,6 @@ fun OrderSuccessScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Tiêu đề
         Text(
             text = title,
             fontFamily = Poppins,
@@ -68,7 +64,6 @@ fun OrderSuccessScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Phụ đề
         Text(
             text = subtitle,
             fontFamily = Poppins,
@@ -87,8 +82,8 @@ fun OrderSuccessScreen(
             },
             modifier = Modifier.fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF324A59),     // màu nền nút
-                contentColor = Color.White              // màu chữ/icon trong nút
+                containerColor = Color(0xFF324A59),
+                contentColor = Color.White
             )
         ) {
             Text(
@@ -101,7 +96,6 @@ fun OrderSuccessScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Nút "Về trang chủ"
         OutlinedButton(
             onClick = {
                 navController.navigate("main?startTab=${BottomBarItem.HOME.name}") {
@@ -110,8 +104,8 @@ fun OrderSuccessScreen(
             },
             modifier = Modifier.fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,     // màu nền nút
-                contentColor = Color(0xFF324A59)             // màu chữ/icon trong nút
+                containerColor = Color.White,
+                contentColor = Color(0xFF324A59)
             )
 
         ) {

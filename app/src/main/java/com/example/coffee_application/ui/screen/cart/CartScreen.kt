@@ -88,10 +88,10 @@ fun CartScreen(
 
     val totalPrice = if (currentLang == "vi") totalAmountVnd else totalAmountUsd
 
-    // Lấy thông tin profile để có địa chỉ mặc định
+
     val profile by profileViewModel.profile.collectAsState()
 
-    // State để quản lý việc hiển thị dialog
+
     var showAddressDialog by remember { mutableStateOf(false) }
 
     if (showAddressDialog) {
@@ -99,17 +99,15 @@ fun CartScreen(
             language = currentLang,
             onDismissRequest = { showAddressDialog = false },
             onConfirm = { newAddress ->
-                showAddressDialog = false // Đóng dialog
+                showAddressDialog = false
 
-                // Xác định địa chỉ sẽ sử dụng
+
                 val addressToUse = if (newAddress.isNotBlank()) {
                     newAddress
                 } else {
-                    // Nếu người dùng để trống, lấy địa chỉ mặc định trong profile
                     profile?.address ?: ""
                 }
 
-                // Gọi hàm checkout với địa chỉ đã được xác định
                 profileViewModel.checkout(cartItems, addressToUse) { success ->
                     if (success) {
                         cartViewModel.clearCart()
@@ -138,17 +136,16 @@ fun CartScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() },
-                        modifier = Modifier.size(40.dp).padding(start = 10.dp, bottom = 10.dp) // Thêm padding để căn chỉnh
+                        modifier = Modifier.size(40.dp).padding(start = 10.dp, bottom = 10.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_back), // Tải ảnh từ drawable
-                            contentDescription = "Back", // Mô tả cho mục đích hỗ trợ tiếp cận
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = "Back",
                             modifier = Modifier
                                 .size(50.dp)
                         )
                     }
                 },
-                // Để giữ title ở giữa, actions cần có một icon vô hình
                 actions = {
                     IconButton(onClick = {}, enabled = false) {
                         Icon(
@@ -163,7 +160,6 @@ fun CartScreen(
             )
         },
         bottomBar = {
-            // Chỉ hiển thị bottom bar nếu giỏ hàng không trống
             if (cartItems.isNotEmpty()) {
                 CartBottomBar(
                     totalPrice = totalPrice,
@@ -191,18 +187,15 @@ fun CartScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(cartItems, key = { it.id }) { item ->
-                        // Cơ chế vuốt để xóa
                         val dismissState = rememberSwipeToDismissBoxState(
                             confirmValueChange = {
-                                // NEW: Check for SwipeToDismissBoxValue.EndToStart
-                                if (it == SwipeToDismissBoxValue.EndToStart) { // Vuốt từ phải qua trái
+                                if (it == SwipeToDismissBoxValue.EndToStart) {
                                     cartViewModel.removeFromCart(item.id)
-                                    true // Confirm the change
+                                    true
                                 } else {
                                     false
                                 }
                             },
-                            // Optional: Adjust swipe threshold
                             positionalThreshold = { it * 0.25f }
                         )
 
@@ -213,8 +206,8 @@ fun CartScreen(
                             backgroundContent = {
                                 val color by animateColorAsState(
                                     targetValue = when (dismissState.targetValue) {
-                                        SwipeToDismissBoxValue.EndToStart -> Color(0xFFFF6B6B) // đỏ hồng sang
-                                        else -> Color(0xFFFFF0F0) // nền nhẹ nhàng
+                                        SwipeToDismissBoxValue.EndToStart -> Color(0xFFFF6B6B)
+                                        else -> Color(0xFFFFF0F0)
                                     },
                                     label = "background color"
                                 )
@@ -271,17 +264,16 @@ fun CartListItem(item: CartItem, language: String) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = item.coffee.imageRes), //
-                contentDescription = item.coffee.name, //
+                painter = painterResource(id = item.coffee.imageRes),
+                contentDescription = item.coffee.name,
                 modifier = Modifier
                     .size(84.dp)
                     .clip(RoundedCornerShape(12.dp))
             )
             Spacer(modifier = Modifier.width(16.dp))
-            // Tên, tùy chọn và số lượng
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = item.coffee.name, //
+                    text = item.coffee.name,
                     fontFamily = Poppins,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
@@ -296,7 +288,7 @@ fun CartListItem(item: CartItem, language: String) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "x${item.quantity}", //
+                    text = "x${item.quantity}",
                     fontFamily = Poppins,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
@@ -308,9 +300,9 @@ fun CartListItem(item: CartItem, language: String) {
             Text(
                 text = if (language == "vi") {
                     val formatter = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
-                    formatter.format(item.totalPriceVnd) //
+                    formatter.format(item.totalPriceVnd)
                 } else {
-                    String.format(Locale.US, "$%.2f", item.totalPriceUsd) //
+                    String.format(Locale.US, "$%.2f", item.totalPriceUsd)
                 },
                 fontFamily = Poppins,
                 fontSize = 16.sp,
@@ -330,10 +322,9 @@ fun EmptyCartView(language: String) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                // Lưu ý: bạn cần thêm file 'empty_cart.png' vào thư mục res/drawable
                 painter = painterResource(id = R.drawable.empty_cart),
                 contentDescription = "Empty Cart",
-                modifier = Modifier.size(650.dp).padding(bottom = 100.dp), // 600dp quá lớn, 250dp là hợp lý hơn
+                modifier = Modifier.size(650.dp).padding(bottom = 100.dp),
                 contentScale = ContentScale.Fit
             )
         }
@@ -409,51 +400,46 @@ fun CartBottomBar(
 }
 
 
-// Helper function được lấy từ DetailsScreen và tùy chỉnh lại
 private fun generateOptionsString(cartItem: CartItem, language: String): String {
     val options = mutableListOf<String>()
-    // Dịch "single/double"
     options.add(
         if (language == "vi") {
-            if (cartItem.selectedShotIndex == 0) "1 shot" else "2 shots" //
+            if (cartItem.selectedShotIndex == 0) "1 shot" else "2 shots"
         } else {
-            if (cartItem.selectedShotIndex == 0) "single" else "double" //
+            if (cartItem.selectedShotIndex == 0) "single" else "double"
         }
     )
-    // Dịch "hot/iced"
-    options.add(if (language == "vi") (if (cartItem.isHotSelected) "nóng" else "lạnh") else (if (cartItem.isHotSelected) "hot" else "iced")) //
+    options.add(if (language == "vi") (if (cartItem.isHotSelected) "nóng" else "lạnh") else (if (cartItem.isHotSelected) "hot" else "iced"))
 
-    // Dịch "small/medium/large"
     options.add(
         if (language == "vi") {
-            when (cartItem.selectedSizeIndex) { //
+            when (cartItem.selectedSizeIndex) {
                 0 -> "nhỏ"
                 1 -> "vừa"
                 else -> "lớn"
             }
         } else {
-            when (cartItem.selectedSizeIndex) { //
+            when (cartItem.selectedSizeIndex) {
                 0 -> "small"
                 1 -> "medium"
                 else -> "large"
             }
         }
     )
-    // Dịch mức đá cho đồ uống lạnh
-    if (!cartItem.isHotSelected) { //
+    if (!cartItem.isHotSelected) {
         val iceLevelString = if (language == "vi") {
-            when (cartItem.selectedIceLevel) { //
+            when (cartItem.selectedIceLevel) {
                 1 -> "ít đá"
                 2 -> "đá vừa"
                 3 -> "nhiều đá"
-                else -> "không đá" // không hiển thị cho "không đá"
+                else -> "không đá"
             }
         } else {
             when (cartItem.selectedIceLevel) { //
                 1 -> "less ice"
                 2 -> "medium ice"
                 3 -> "full ice"
-                else -> "no ice" // không hiển thị cho "no ice"
+                else -> "no ice"
             }
         }
         if (iceLevelString.isNotEmpty()) {
@@ -463,7 +449,7 @@ private fun generateOptionsString(cartItem: CartItem, language: String): String 
     return options.filter { it.isNotEmpty() }.joinToString(" | ")
 }
 
-// hộp nhập địa chỉ
+
 @Composable
 fun AddressConfirmationDialog(
     language: String,
@@ -472,7 +458,6 @@ fun AddressConfirmationDialog(
 ) {
     var text by remember { mutableStateOf("") }
 
-    // Dịch các chuỗi văn bản (giữ nguyên)
     val title = if (language == "vi") "Nhập địa chỉ bạn muốn nhận hàng:" else "Please type in the address you want to pick up:"
     val note = if (language == "vi") "(Nếu để trống, hệ thống sẽ sử dụng địa chỉ mặc định của bạn.)" else "(If you leave this empty, your default address will be used.)"
     val example = if (language == "vi") "(Vd: 223 Nguyễn Văn Cừ, P.Chợ Quán, Q.5, TP.HCM)" else "(Ex: 223 Nguyen Van Cu Street, Cho Quan Ward, Dist 5, HCMC)"
@@ -487,13 +472,12 @@ fun AddressConfirmationDialog(
                 text = title,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp, // <<< GIẢM KÍCH THƯỚC CHỮ TIÊU ĐỀ
-                textAlign = TextAlign.Center, // <<< CĂN GIỮA VĂN BẢN TIÊU ĐỀ
-                modifier = Modifier.fillMaxWidth() // Cần có để căn giữa hoạt động
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         },
         text = {
-            // Thêm horizontalAlignment để căn giữa các thành phần bên trong
             Column {
                 Text(
                     text = note,

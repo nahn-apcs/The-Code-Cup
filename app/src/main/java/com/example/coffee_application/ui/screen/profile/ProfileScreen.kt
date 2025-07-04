@@ -69,7 +69,6 @@ fun ProfileScreen(
         }
     }
 
-    // --- LABELS TÙY NGÔN NGỮ ---
     val title = if (currentLang == "vi") "Thông tin" else "Profile"
     val fullNameLabel = if (currentLang == "vi") "Họ tên" else "Full name"
     val phoneLabel = if (currentLang == "vi") "Số điện thoại" else "Phone number"
@@ -83,7 +82,6 @@ fun ProfileScreen(
             .padding(horizontal = 24.dp, vertical = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -169,9 +167,7 @@ fun ProfileScreen(
                     profileViewModel.onSignOut()
                     cartViewModel.clearCart()
 
-                    // Điều hướng về màn hình đăng nhập
                     navController.navigate("splash") {
-                        // Xóa toàn bộ backstack để người dùng không thể back lại
                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                     }
                 },
@@ -196,17 +192,16 @@ fun ProfileItem(
     icon: Int,
     label: String,
     value: String,
-    isEditing: Boolean, // Trạng thái chung của màn hình
-    isEditable: Boolean = true, // Mục này có được phép sửa không?
-    onValueChange: (String) -> Unit // Callback để cập nhật giá trị
+    isEditing: Boolean,
+    isEditable: Boolean = true,
+    onValueChange: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp), // Giảm padding một chút cho cân đối
+            .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Icon bên trái (giữ nguyên)
         Surface(
             shape = CircleShape,
             color = Color(0xFFF1F3F6),
@@ -228,16 +223,13 @@ fun ProfileItem(
                 fontWeight = FontWeight.Medium,
             )
 
-            // Điều kiện để hiển thị TextField hoặc Text
             if (isEditing && isEditable) {
-                // Đang ở chế độ sửa và mục này được phép sửa
                 OutlinedTextField(
                     value = value,
                     onValueChange = onValueChange,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             } else {
-                // Chế độ xem bình thường
                 Text(
                     fontFamily = Poppins,
                     text = value,

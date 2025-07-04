@@ -6,7 +6,8 @@ import java.util.UUID
 
 @Keep
 data class Profile(
-    val phoneNumber: String = "",        //Dùng làm ID chính
+    // ID chính
+    val phoneNumber: String = "",
     val fullName: String = "",
     val email: String = "",
     val address: String = "",

@@ -302,7 +302,7 @@ fun NumericKeypad(onKeyClick: (String) -> Unit) {
                             .weight(1f)
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFBFAEA0), // màu nền
+                            containerColor = Color(0xFFBFAEA0),
                             contentColor = Color.White
                         )
                     ) {
@@ -339,7 +339,7 @@ fun NumericKeypad(onKeyClick: (String) -> Unit) {
                     .weight(1f)
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFA45D5D), // đỏ trầm
+                    containerColor = Color(0xFFA45D5D),
                     contentColor = Color.White
                 )
             ) {

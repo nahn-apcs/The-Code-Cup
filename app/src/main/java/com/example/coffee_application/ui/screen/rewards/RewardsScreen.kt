@@ -48,7 +48,7 @@ import com.example.coffee_application.viewmodel.ProfileViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RewardsScreen(
-    paddingValues: PaddingValues, // Nhận padding từ Scaffold cha
+    paddingValues: PaddingValues,
     profileViewModel: ProfileViewModel = viewModel(),
     languageViewModel: LanguageViewModel = (viewModel()),
     navController: NavController
@@ -58,20 +58,17 @@ fun RewardsScreen(
 
     val rewardHistory = profile?.history?.hist ?: emptyList()
 
-    // Dịch các chuỗi văn bản
     val screenTitle = if (currentLang == "vi") "Phần thưởng" else "Rewards"
     val loyaltyCardTitle = if (currentLang == "vi") "Thẻ tích điểm" else "Loyalty card"
     val myPointsTitle = if (currentLang == "vi") "Điểm của tôi:" else "My Points:"
     val redeemButtonText = if (currentLang == "vi") "Đổi quà" else "Redeem drinks"
     val historyTitle = if (currentLang == "vi") "Lịch sử Phần thưởng" else "History Rewards"
 
-    // Sử dụng Column làm gốc, tương tự HomePageScreen
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = paddingValues.calculateBottomPadding()) // Áp dụng padding dưới từ Scaffold cha
+            .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
-        // Top App Bar nằm bên trong Column
         CenterAlignedTopAppBar(
             title = {
                 Text(
@@ -88,23 +85,19 @@ fun RewardsScreen(
                 .padding(bottom = 30.dp)
         )
 
-        // LazyColumn để chứa nội dung có thể cuộn
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Thẻ tích điểm
             item {
                 LoyaltyCard(
                     title = loyaltyCardTitle,
-                    currentStamps = (profile?.loyaltyPts ?: 0) % 8, //
+                    currentStamps = (profile?.loyaltyPts ?: 0) % 8,
                     totalStamps = 8
                 )
             }
-
-            // Thẻ điểm của tôi
             item {
                 MyPointsCardImageBackground(
                     title = myPointsTitle,
@@ -115,8 +108,6 @@ fun RewardsScreen(
                     }
                 )
             }
-
-            // Tiêu đề lịch sử
             item {
                 Text(
                     text = historyTitle,
@@ -126,13 +117,9 @@ fun RewardsScreen(
                     modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
                 )
             }
-
-            // Danh sách lịch sử lấy từ ViewModel
             items(rewardHistory) { order ->
                 RewardHistoryListItem(item = order)
             }
-
-            // Thêm một khoảng trống ở cuối để không bị che bởi Bottom Nav Bar
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -140,7 +127,6 @@ fun RewardsScreen(
     }
 }
 
-// --- Các Composable con (LoyaltyCard, MyPointsCard, RewardHistoryListItem) giữ nguyên như cũ ---
 
 @Composable
 fun LoyaltyCard(title: String, currentStamps: Int, totalStamps: Int) {
@@ -275,7 +261,7 @@ fun RewardHistoryListItem(item: Order) {
             )
         }
         Text(
-            text = "+ ${item.rewardPoints} Pts", //
+            text = "+ ${item.rewardPoints} Pts",
             fontFamily = Poppins,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,

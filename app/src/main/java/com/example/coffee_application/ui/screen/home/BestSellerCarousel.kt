@@ -67,21 +67,18 @@ fun BestSellerCarousel(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val contentPadding = (screenWidth - itemWidth) / 2
 
-    // Vòng lặp vô hạn để tạo hiệu ứng cuộn tròn
     val pagerState = rememberPagerState(
-        initialPage = items.size * 500, // Bắt đầu ở giữa để cuộn được 2 chiều
+        initialPage = items.size * 500,
         pageCount = { Int.MAX_VALUE }
     )
     val scope = rememberCoroutineScope()
 
-    // Tự động cuộn sau mỗi 3 giây
     LaunchedEffect(Unit) {
         while (true) {
             delay(2000)
             scope.launch {
                 pagerState.animateScrollToPage(
                     page = pagerState.currentPage + 1,
-                    // Thêm dòng này để kiểm soát tốc độ
                     animationSpec = tween(durationMillis = 1000)
                 )
             }
@@ -105,14 +102,12 @@ fun BestSellerCarousel(
             contentPadding = PaddingValues(horizontal = contentPadding),
             pageSpacing = 16.dp,
         ) { page ->
-            val item = items[page % items.size] // Lấy item tương ứng
+            val item = items[page % items.size]
 
-            // Tính toán độ lệch so với trang trung tâm
             val pageOffset = (
                     (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
                     ).absoluteValue
 
-            // Dùng độ lệch để tính toán hiệu ứng phóng to/thu nhỏ
             val scale = lerp(
                 start = 0.75f,
                 stop = 1.1f,
@@ -187,7 +182,6 @@ fun CarouselItem(
     }
 }
 
-// Hàm nội suy tuyến tính để tính giá trị trung gian
 fun lerp(start: Float, stop: Float, fraction: Float): Float {
     return (1 - fraction) * start + fraction * stop
 }

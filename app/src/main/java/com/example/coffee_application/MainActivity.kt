@@ -28,18 +28,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Coffee_ApplicationTheme {
-                // 1. Lấy trạng thái ngôn ngữ từ ViewModel
+
                 val currentLang by languageViewModel.language.collectAsState()
 
-                // 2. Dùng LaunchedEffect để lắng nghe sự thay đổi của `currentLang`
-                //    Nó sẽ chỉ chạy lại khi `currentLang` thay đổi giá trị.
                 LaunchedEffect(currentLang) {
-                    // Cập nhật lại context của Activity để áp dụng ngôn ngữ mới
-                    // cho toàn bộ ứng dụng trong các lần khởi chạy sau.
-                    // Đây là cách đúng để thay thế cho việc truyền callback xuống.
                     val baseContext = baseContext
                     val newContext = LocaleHelper.setLocale(baseContext, currentLang)
-                    // Dòng recreate() sẽ làm mới lại Activity một cách mượt mà
                     if (baseContext.resources.configuration.locales[0].language != currentLang) {
                         recreate()
                     }
