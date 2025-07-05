@@ -1,15 +1,49 @@
+# =====================================
+# Gradle and Build Output
+# =====================================
+.gradle/
+build/
+.externalNativeBuild/
+.cxx/
+*.aab
+*.apk
+output-metadata.json
+
+# =====================================
+# Android Studio/IntelliJ IDE Files
+# =====================================
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+.idea/
+.idea/caches
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+
+# =====================================
+# Local Configuration and Secrets
+# =====================================
 local.properties
+google-services.json
+
+# =====================================
+# System and Log Files
+# =====================================
+*.log
+.DS_Store
+*.hprof
+
+# =====================================
+# Capture and Profiling Output
+# =====================================
+captures/
+
+# =====================================
+# Signing / Keystore Files
+# =====================================
+*.jks
+*.keystore
